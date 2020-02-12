@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  vars:
+    my_content: " hello "
+  tasks:
+  - name: create folders
+    blockinfile: 
+     dest: /root/test/hi.txt
+     state: present     
+     block: |
+        These lines are added by blockinfile module
+        Check out the marker lines
+     backup: yes
