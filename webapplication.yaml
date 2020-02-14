@@ -1,0 +1,44 @@
+---
+ - name: Install a python based web application including mysql and flask app
+   hosts: localhost
+   become: true
+   tasks:
+   - name: Install python 
+     apt: 
+      name= "{{ item }}" 
+      state=present
+     with_items:
+     - python
+     - python-setuptools
+     - python-dev
+     - python-pip
+     - python-mysqldb
+   - name: Install mysql
+     apt: name= "{{ item }}" state=present
+     with_items:
+     - mysql-server
+     - mysql-client
+   - name: starting the mysql service
+     service:
+       name: mysql
+       state: started
+       enabled: yes
+   - name: create a application database
+     mysql_db:
+       login_user: root
+       login_password: jenkins
+       name: 'employee_db'
+       state: present
+   - name: create a application user
+     mysql_user: login_user='root' login_password='jenkins' name='db_user' password='jenkins' priv='*.*:ALL' host='%' state='present'
+   - name: Install flask
+     pip:
+      name: "{{ item }}"
+      state: present
+     with_items:
+     - flask
+     - flask-mysql
+   - name: copy the web-server code
+     copy: src=app.py dest=/opt/app.py
+   - name: start the web applicatio
+     shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &
