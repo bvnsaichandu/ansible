@@ -1,0 +1,7 @@
+---
+- name: Install web application
+  hosts: localhost
+  roles:
+  - python
+  - mysql_db
+  - flask_web

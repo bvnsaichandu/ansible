@@ -1,0 +1,8 @@
+---
+ - name: Make sure pymysql is present
+   hosts: localhost
+   tasks:
+   - name: installing pip-pymysql  
+     pip:
+      name: pymysql
+      state: present

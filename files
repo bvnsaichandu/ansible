@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Ansible Insert multiple lines using blockinfile
+    blockinfile:
+      dest: /root/test/block_output.txt
+      block: |
+        These lines are added by blockinfile module
+        Check out the marker lines
+      backup: yes

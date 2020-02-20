@@ -1,0 +1,29 @@
+---
+# tasks file for mysql_db
+- name: Install mysql database
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - mysql-server
+  - mysql-client
+- name: start my sql service
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+- name: create application database
+  mysql_db:
+    login_user: root
+    login_password: jenkins 
+    name: employee_db
+    state: present
+- name: create application db user
+  mysql_user:
+    login_user: root
+    login_password: jenkins
+    name: 'db_user'
+    password: 'jenkins'
+    priv: '*.*:ALL'
+    host: '%'
+    state: 'present'
